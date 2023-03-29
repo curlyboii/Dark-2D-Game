@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,16 +12,31 @@ public class PlayerController : MonoBehaviour
 
     bool isFasingLeft;
 
+    public float jumpForce;
+    public LayerMask WhatIsGround; // A LayerMask is a bitmask that stores information about which layers are included or excluded from certain operations,
+                                   // such as raycasting or collision detection.
+                                   //In many games, objects like the player character need to know whether they are standing on the ground or not.
+                                   //One common way to achieve this is by using a LayerMask to mark certain layers in the scene as "ground" layers,
+                                   //and then using a raycast to detect when the player is in contact with an object on one of those layers.
+    public float JumpRadius;
+    bool IsGrounded;
+
+    public Transform groundCheckPos;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+
+    rb = GetComponent<Rigidbody2D>();
 
     }
 
-    // Update is called once per frame
+// Update is called once per frame
     void Update()
     {
+        IsGrounded = Physics2D.OverlapCircle(groundCheckPos.position, JumpRadius, WhatIsGround);
+
         float xInput = Input.GetAxisRaw("Horizontal"); // right arrow xInput = 1 and left xInput = -1, nothing = 0
         rb.velocity = new Vector2(xInput * Speed * Time.deltaTime, rb.velocity.y); // speed rigidbody
 
@@ -32,6 +49,13 @@ public class PlayerController : MonoBehaviour
         {
             Flip();
             //flip the player
+        }
+
+        if (IsGrounded && Input.GetKeyDown(KeyCode.Space))
+        { 
+        
+            rb.velocity = Vector2.up * jumpForce;
+        
         }
     }
 
@@ -46,5 +70,10 @@ public class PlayerController : MonoBehaviour
     {
         isFasingLeft = !isFasingLeft;   
         transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawSphere(groundCheckPos.position, JumpRadius);
     }
 }
