@@ -18,7 +18,9 @@ public class PlayerController : MonoBehaviour
                                    //In many games, objects like the player character need to know whether they are standing on the ground or not.
                                    //One common way to achieve this is by using a LayerMask to mark certain layers in the scene as "ground" layers,
                                    //and then using a raycast to detect when the player is in contact with an object on one of those layers.
-    public float JumpRadius;
+
+    public float JumpRadius; //The JumpRadius variable determines the radius of the circle used to check if the player is touching the ground.
+                             //It is used in the Physics2D.OverlapCircle method in the Update method to determine whether the player is grounded or not.
     bool IsGrounded;
 
     public Transform groundCheckPos;
@@ -35,7 +37,10 @@ public class PlayerController : MonoBehaviour
 // Update is called once per frame
     void Update()
     {
-        IsGrounded = Physics2D.OverlapCircle(groundCheckPos.position, JumpRadius, WhatIsGround);
+        IsGrounded = Physics2D.OverlapCircle(groundCheckPos.position, JumpRadius, WhatIsGround); // Physics2D.OverlapCircle method, The method checks if the circle
+                                                                                                 // overlaps with any object in the WhatIsGround layer,
+                                                                                                 // which is set in the Inspector. If there is a collision,
+                                                                                                 // the IsGrounded variable is set to true.
 
         float xInput = Input.GetAxisRaw("Horizontal"); // right arrow xInput = 1 and left xInput = -1, nothing = 0
         rb.velocity = new Vector2(xInput * Speed * Time.deltaTime, rb.velocity.y); // speed rigidbody
