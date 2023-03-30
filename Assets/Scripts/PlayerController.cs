@@ -15,6 +15,11 @@ public class PlayerController : MonoBehaviour
     bool isFasingLeft;
     Animator anim;
 
+    bool canDash, isDashing;
+    float dashDirection;
+    public float dashForce;
+    public float waitTimeDash;
+
     #region Jump (variables)
     bool IsGrounded;
     public float jumpForce;
@@ -36,8 +41,10 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
 
-    rb = GetComponent<Rigidbody2D>();
-    anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        canDash = true;
+        
 
     }
 
@@ -102,12 +109,37 @@ public class PlayerController : MonoBehaviour
 
         #endregion
 
+
+        #region Restart scene R key
         if (Input.GetKeyDown(KeyCode.R))
         {
 
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         
         }
+        #endregion
+
+        #region Dash
+
+        if (Input.GetKeyDown(KeyCode.Q) && canDash) //checks if the "Q" key is pressed and if the player can currently dash.    
+        {
+            // dash
+            isDashing = true;
+            canDash = false;
+            StartCoroutine(stopDashing());
+        }
+
+        if (isDashing)
+        {
+            dashDirection = Input.GetAxisRaw("Horizontal");
+            if(dashDirection == 0)
+            {
+                dashDirection = transform.localScale.x;
+            }
+            rb.velocity = new Vector2(dashDirection * dashForce, rb.velocity.y) * Time.deltaTime;
+        }
+
+        #endregion
     }
 
     #region Flip
@@ -123,6 +155,15 @@ public class PlayerController : MonoBehaviour
         transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
     }
     #endregion
+
+    IEnumerator stopDashing()
+    {
+        yield return new WaitForSeconds(waitTimeDash);
+        canDash = true;
+        isDashing = false;
+
+    }
+
 
     #region Draw radius
     private void OnDrawGizmosSelected()
