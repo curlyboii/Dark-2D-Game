@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     float dashDirection;
     public float dashForce;
     public float waitTimeDash;
+    public int dashAmount;
+    int dashCounter;
 
     #region Jump (variables)
     bool IsGrounded;
@@ -47,6 +49,7 @@ public class PlayerController : MonoBehaviour
         trailRen = GetComponent<TrailRenderer>();
         canDash = true;
         trailRen.emitting = false;
+        dashCounter = dashAmount;
         
 
     }
@@ -71,7 +74,7 @@ public class PlayerController : MonoBehaviour
         }
         #endregion
 
-        #region Jump
+        #region Jump and a bit dash (isGrounded)
         IsGrounded = Physics2D.OverlapCircle(groundCheckPos.position, JumpRadius, WhatIsGround); // Physics2D.OverlapCircle method, The method checks if the circle
                                                                                                  // overlaps with any object in the WhatIsGround layer,
                                                                                                  // which is set in the Inspector. If there is a collision,
@@ -80,6 +83,7 @@ public class PlayerController : MonoBehaviour
         {
 
             jumpCounter = jumpAmount;
+            dashCounter = dashAmount;
           
         }
 
@@ -124,12 +128,17 @@ public class PlayerController : MonoBehaviour
 
         #region Dash
 
-        if (Input.GetKeyDown(KeyCode.Q) && canDash) //checks if the "Q" key is pressed and if the player can currently dash.    
+        if (Input.GetKeyDown(KeyCode.Q) && canDash && dashCounter > 0) //checks if the "Q" key is pressed and if the player can currently dash.    
         {
             // dash
+            dashCounter--;
             isDashing = true; //sets the isDashing boolean variable to true
             canDash = false; // sets the canDash boolean variable to false to prevent dashing until the cooldown period has elapsed
+            rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation; // By setting rb.constraints to RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation, both of these constraints are applied to the rigidbody,
+                                                                                                             // meaning that the player cannot move vertically or rotate while dashing. This can be useful for maintaining the direction and trajectory of the dash without
+                                                                                                             // any unexpected changes due to gravity or rotation.
             StartCoroutine(stopDashing()); //starts a coroutine called stopDashing()
+
         }
 
         if (isDashing) // checks if the player is currently dashing. If this is true, the following code is executed
@@ -174,6 +183,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator stopDashing()
     {
         yield return new WaitForSeconds(waitTimeDash);
+        rb.constraints = ~RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation;
         canDash = true;
         isDashing = false;
         trailRen.emitting = false;
