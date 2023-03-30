@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     public float waitTimeDash;
     public int dashAmount;
     int dashCounter;
+    float xInput;
+
 
     #region Jump (variables)
     bool IsGrounded;
@@ -59,7 +61,9 @@ public class PlayerController : MonoBehaviour
     {
 
         #region Movement and Fasing (Left and right)
-        float xInput = Input.GetAxisRaw("Horizontal"); // right arrow xInput = 1 and left xInput = -1, nothing = 0
+
+
+        xInput = Input.GetAxisRaw("Horizontal"); // right arrow xInput = 1 and left xInput = -1, nothing = 0
         rb.velocity = new Vector2(xInput * Speed * Time.deltaTime, rb.velocity.y); // speed rigidbody
 
         if (xInput > 0 && isFasingLeft == true)
@@ -130,28 +134,33 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q) && canDash && dashCounter > 0) //checks if the "Q" key is pressed and if the player can currently dash.    
         {
+
             // dash
+            dashDirection = Input.GetAxisRaw("Horizontal"); // gets the value of the horizontal axis input, which will be used to determine the direction of the dash
+            if (dashDirection == 0) // checks if the dashDirection variable is equal to zero.
+                                    // This will happen if the player is not providing any input in the horizontal axis. If this is the case,
+                                    // the direction of the dash is set to the player's facing direction by getting the x component of the transform.localScale vector.
+            {
+                dashDirection = Mathf.Clamp(transform.localScale.x, -1, 1); //If the player is not providing any input in the horizontal axis,
+                                                                            //dashDirection will be set to 0. However, if the player is facing left and hits the "Q" key to dash,
+                                                                            //we want the player to dash in the left direction, so we need to set dashDirection to -1.
+                                                                            //Similarly, if the player is facing right, we want the player to dash in the right direction,
+                                                                            //so we need to set dashDirection to 1.
+            }
             dashCounter--;
             isDashing = true; //sets the isDashing boolean variable to true
             canDash = false; // sets the canDash boolean variable to false to prevent dashing until the cooldown period has elapsed
-            rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation; // By setting rb.constraints to RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation, both of these constraints are applied to the rigidbody,
-                                                                                                             // meaning that the player cannot move vertically or rotate while dashing. This can be useful for maintaining the direction and trajectory of the dash without
-                                                                                                             // any unexpected changes due to gravity or rotation.
+
             StartCoroutine(stopDashing()); //starts a coroutine called stopDashing()
+
 
         }
 
         if (isDashing) // checks if the player is currently dashing. If this is true, the following code is executed
         {
-            dashDirection = Input.GetAxisRaw("Horizontal"); // gets the value of the horizontal axis input, which will be used to determine the direction of the dash
-
-            if (dashDirection == 0) // checks if the dashDirection variable is equal to zero.
-                                        // This will happen if the player is not providing any input in the horizontal axis. If this is the case,
-                                        // the direction of the dash is set to the player's facing direction by getting the x component of the transform.localScale vector.
-            {
-                dashDirection = transform.localScale.x;
-            }
-
+            rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation; // By setting rb.constraints to RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation, both of these constraints are applied to the rigidbody,
+                                                                                                             // meaning that the player cannot move vertically or rotate while dashing. This can be useful for maintaining the direction and trajectory of the dash without
+                                                                                                             // any unexpected changes due to gravity or rotation.
             rb.velocity = new Vector2(dashDirection * dashForce, rb.velocity.y) * Time.deltaTime; //sets the rigidbody's velocity to move the player in the direction
             trailRen.emitting = true;                                                                                //of the dash. The dashDirection * dashForce part calculates the speed and direction of the dash.
                                                                                                   //rb.velocity.y preserves the vertical velocity of the rigidbody. 
@@ -187,7 +196,10 @@ public class PlayerController : MonoBehaviour
         canDash = true;
         isDashing = false;
         trailRen.emitting = false;
+
     }
+
+
 
 
     #region Draw radius

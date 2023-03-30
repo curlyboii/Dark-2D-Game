@@ -385,8 +385,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 800
   groundCheckPos: {fileID: 741338451}
-  dashForce: 2000
+  dashForce: 3000
   waitTimeDash: 0.2
+  dashAmount: 1
+  waitTimeDashOnGround: 5
   jumpForce: 15
   jumpAmount: 1
   JumpRadius: 0.2
