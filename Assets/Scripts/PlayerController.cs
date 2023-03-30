@@ -9,21 +9,21 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody2D rb;
     public float Speed;
-
-    bool isFasingLeft;
-
+    
     public float jumpForce;
     public LayerMask WhatIsGround; // A LayerMask is a bitmask that stores information about which layers are included or excluded from certain operations,
                                    // such as raycasting or collision detection.
                                    //In many games, objects like the player character need to know whether they are standing on the ground or not.
                                    //One common way to achieve this is by using a LayerMask to mark certain layers in the scene as "ground" layers,
                                    //and then using a raycast to detect when the player is in contact with an object on one of those layers.
-
+    public Transform groundCheckPos;
     public float JumpRadius; //The JumpRadius variable determines the radius of the circle used to check if the player is touching the ground.
                              //It is used in the Physics2D.OverlapCircle method in the Update method to determine whether the player is grounded or not.
     bool IsGrounded;
+    bool isFasingLeft;
+    public int jumpAmount;
+    int jumpCounter;
 
-    public Transform groundCheckPos;
 
 
     // Start is called before the first frame update
@@ -37,11 +37,8 @@ public class PlayerController : MonoBehaviour
 // Update is called once per frame
     void Update()
     {
-        IsGrounded = Physics2D.OverlapCircle(groundCheckPos.position, JumpRadius, WhatIsGround); // Physics2D.OverlapCircle method, The method checks if the circle
-                                                                                                 // overlaps with any object in the WhatIsGround layer,
-                                                                                                 // which is set in the Inspector. If there is a collision,
-                                                                                                 // the IsGrounded variable is set to true.
 
+        #region Movement and Fasing (Left and right)
         float xInput = Input.GetAxisRaw("Horizontal"); // right arrow xInput = 1 and left xInput = -1, nothing = 0
         rb.velocity = new Vector2(xInput * Speed * Time.deltaTime, rb.velocity.y); // speed rigidbody
 
@@ -55,16 +52,33 @@ public class PlayerController : MonoBehaviour
             Flip();
             //flip the player
         }
+        #endregion
 
-        if (IsGrounded && Input.GetKeyDown(KeyCode.Space))
-        { 
-        
-            rb.velocity = Vector2.up * jumpForce;
-        
+        #region Jump
+        IsGrounded = Physics2D.OverlapCircle(groundCheckPos.position, JumpRadius, WhatIsGround); // Physics2D.OverlapCircle method, The method checks if the circle
+                                                                                                 // overlaps with any object in the WhatIsGround layer,
+                                                                                                 // which is set in the Inspector. If there is a collision,
+                                                                                                 // the IsGrounded variable is set to true.
+        if (IsGrounded)
+        {
+
+            jumpCounter = jumpAmount;
+          
         }
+
+        if (Input.GetKeyDown(KeyCode.Space) && jumpCounter > 0)
+        {
+
+            rb.velocity = Vector2.up * jumpForce;
+            if (!IsGrounded)
+            {
+                jumpCounter--;
+            }
+        }
+        #endregion
     }
 
-
+    #region Flip
     /// <summary>
     /// The ! operator negates the current value of the boolean variable, which means that if isFasingLeft was true,
     /// it becomes false, and vice versa. So, if isFasingLeft was true, 
@@ -76,9 +90,12 @@ public class PlayerController : MonoBehaviour
         isFasingLeft = !isFasingLeft;   
         transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
     }
+    #endregion
 
+    #region Draw radius
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawSphere(groundCheckPos.position, JumpRadius);
+        Gizmos.DrawSphere(groundCheckPos.position, JumpRadius); // see the radius
     }
+    #endregion
 }

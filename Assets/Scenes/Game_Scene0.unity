@@ -386,7 +386,7 @@ MonoBehaviour:
   WhatIsGround:
     serializedVersion: 2
     m_Bits: 128
-  JumpRadius: 2.6
+  JumpRadius: 0.2
   groundCheckPos: {fileID: 741338451}
 --- !u!50 &1562113926
 Rigidbody2D:
