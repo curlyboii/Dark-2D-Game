@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public Transform groundCheckPos;
     bool isFasingLeft;
     Animator anim;
+    TrailRenderer trailRen;
 
     bool canDash, isDashing;
     float dashDirection;
@@ -43,7 +44,9 @@ public class PlayerController : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        trailRen = GetComponent<TrailRenderer>();
         canDash = true;
+        trailRen.emitting = false;
         
 
     }
@@ -124,19 +127,25 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q) && canDash) //checks if the "Q" key is pressed and if the player can currently dash.    
         {
             // dash
-            isDashing = true;
-            canDash = false;
-            StartCoroutine(stopDashing());
+            isDashing = true; //sets the isDashing boolean variable to true
+            canDash = false; // sets the canDash boolean variable to false to prevent dashing until the cooldown period has elapsed
+            StartCoroutine(stopDashing()); //starts a coroutine called stopDashing()
         }
 
-        if (isDashing)
+        if (isDashing) // checks if the player is currently dashing. If this is true, the following code is executed
         {
-            dashDirection = Input.GetAxisRaw("Horizontal");
-            if(dashDirection == 0)
+            dashDirection = Input.GetAxisRaw("Horizontal"); // gets the value of the horizontal axis input, which will be used to determine the direction of the dash
+
+            if (dashDirection == 0) // checks if the dashDirection variable is equal to zero.
+                                        // This will happen if the player is not providing any input in the horizontal axis. If this is the case,
+                                        // the direction of the dash is set to the player's facing direction by getting the x component of the transform.localScale vector.
             {
                 dashDirection = transform.localScale.x;
             }
-            rb.velocity = new Vector2(dashDirection * dashForce, rb.velocity.y) * Time.deltaTime;
+
+            rb.velocity = new Vector2(dashDirection * dashForce, rb.velocity.y) * Time.deltaTime; //sets the rigidbody's velocity to move the player in the direction
+            trailRen.emitting = true;                                                                                //of the dash. The dashDirection * dashForce part calculates the speed and direction of the dash.
+                                                                                                  //rb.velocity.y preserves the vertical velocity of the rigidbody. 
         }
 
         #endregion
@@ -156,12 +165,18 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+
+    /// <summary>
+    /// This IEnumerator method stopDashing() waits for a specified amount of time using the WaitForSeconds() method,
+    /// and then sets canDash back to true and isDashing to false, which allows the player to dash again
+    /// </summary>
+    /// <returns></returns>
     IEnumerator stopDashing()
     {
         yield return new WaitForSeconds(waitTimeDash);
         canDash = true;
         isDashing = false;
-
+        trailRen.emitting = false;
     }
 
 
