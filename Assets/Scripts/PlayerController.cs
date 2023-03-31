@@ -16,12 +16,17 @@ public class PlayerController : MonoBehaviour
     Animator anim;
     TrailRenderer trailRen;
 
+    #region Dash (variables)
+
     bool canDash, isDashing;
     float dashDirection;
     public float dashForce;
     public float waitTimeDash;
     public int dashAmount;
     int dashCounter;
+
+    #endregion
+
     float xInput;
 
 
@@ -39,7 +44,22 @@ public class PlayerController : MonoBehaviour
                                    //and then using a raycast to detect when the player is in contact with an object on one of those layers.
     #endregion
 
+    #region Wall Jump variables
 
+    bool canGrab;
+    bool isGrabbing;
+    public float wallJumpRadius;
+    float scaleX;
+    public Transform wallJumpCheckPos;
+    float initalGravityScale;
+    public float wallJumpGravity;
+    public float wallJumpForceX, wallJumpForceY;
+
+    //Timer wall jumping
+    public float startWallJumpTimer;
+    float wallJumpTimer;
+    
+    #endregion
 
 
     // Start is called before the first frame update
@@ -52,7 +72,8 @@ public class PlayerController : MonoBehaviour
         canDash = true;
         trailRen.emitting = false;
         dashCounter = dashAmount;
-        
+
+        initalGravityScale = rb.gravityScale;
 
     }
 
@@ -62,9 +83,24 @@ public class PlayerController : MonoBehaviour
 
         #region Movement and Fasing (Left and right)
 
+        if(wallJumpTimer <= 0) //timer, If it has, then the player has finished wall jumping and the code enters the if block.
+                               //Inside the if block, there's another if statement that checks if the player is not currently dashing.
+                               //If the player is not dashing, then the code retrieves the horizontal input from the player using Input.GetAxisRaw("Horizontal").
+        {
+            if (!isDashing) // Not dashing
+            {
+                xInput = Input.GetAxisRaw("Horizontal"); // right arrow xInput = 1 and left xInput = -1, nothing = 0
+                rb.velocity = new Vector2(xInput * Speed * Time.deltaTime, rb.velocity.y); // speed rigidbody
+            }
 
-        xInput = Input.GetAxisRaw("Horizontal"); // right arrow xInput = 1 and left xInput = -1, nothing = 0
-        rb.velocity = new Vector2(xInput * Speed * Time.deltaTime, rb.velocity.y); // speed rigidbody
+        }
+        else //Inside the else block, the wallJumpTimer variable is decremented by Time.deltaTime.
+             //This ensures that the player cannot wall jump indefinitely and there is a limited time frame for the wall jump to be executed.
+        {
+
+            wallJumpTimer -= Time.deltaTime;
+
+        }
 
         if (xInput > 0 && isFasingLeft == true)
         {
@@ -167,6 +203,45 @@ public class PlayerController : MonoBehaviour
         }
 
         #endregion
+
+
+        #region Wall Jump
+
+        canGrab = Physics2D.OverlapCircle(wallJumpCheckPos.position, wallJumpRadius, WhatIsGround);
+
+        isGrabbing = false;
+        if(!IsGrounded && canGrab)
+        {
+            scaleX = transform.localScale.x; //float clampedScale = Mathf.Clamp(transform.position.x, -1, 1);
+
+            if ((scaleX > 0 && xInput > 0) || (scaleX < 0 && xInput < 0))
+            {
+                isGrabbing = true;
+                if(Input.GetKeyDown(KeyCode.Space)) 
+                {
+                    //Jump
+                    wallJumpTimer = startWallJumpTimer;
+                    rb.velocity = new Vector2(-xInput * wallJumpForceX, wallJumpForceY);
+
+                    rb.gravityScale = initalGravityScale;
+                    isGrabbing = false;
+                }
+            }
+
+        }
+
+        if(isGrabbing)
+        {
+            rb.gravityScale = wallJumpGravity;
+            rb.velocity = Vector2.zero;
+
+        }
+        else
+        {
+            rb.gravityScale = initalGravityScale;
+
+        }
+        #endregion
     }
 
     #region Flip
@@ -206,6 +281,7 @@ public class PlayerController : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawSphere(groundCheckPos.position, JumpRadius); // see the radius
+        Gizmos.DrawSphere(wallJumpCheckPos.position, wallJumpRadius); // see the radius
     }
     #endregion
 }
