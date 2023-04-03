@@ -275,6 +275,17 @@ public class PlayerController : MonoBehaviour
     }
 
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "Death")
+        {
+            Die();
+        }
+    }
+    void Die()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 
 
     #region Draw radius
@@ -284,4 +295,6 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawSphere(wallJumpCheckPos.position, wallJumpRadius); // see the radius
     }
     #endregion
+
+
 }
