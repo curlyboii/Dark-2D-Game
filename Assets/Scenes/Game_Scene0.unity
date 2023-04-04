@@ -10731,6 +10731,8 @@ MonoBehaviour:
   wallJumpForceX: 15
   wallJumpForceY: 15
   startWallJumpTimer: 0.1
+  DeathEffect: {fileID: 3556983091307870107, guid: a134585a69661e144b1cdff6ddba0cbc, type: 3}
+  waitTimeRespawn: 2
 --- !u!50 &1562113926
 Rigidbody2D:
   serializedVersion: 4

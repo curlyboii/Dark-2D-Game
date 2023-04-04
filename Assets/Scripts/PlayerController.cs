@@ -58,8 +58,11 @@ public class PlayerController : MonoBehaviour
     //Timer wall jumping
     public float startWallJumpTimer;
     float wallJumpTimer;
-    
+
     #endregion
+
+    public GameObject DeathEffect;
+    public  float waitTimeRespawn;
 
 
     // Start is called before the first frame update
@@ -280,9 +283,17 @@ public class PlayerController : MonoBehaviour
         if(collision.gameObject.tag == "Death")
         {
             Die();
+
         }
     }
     void Die()
+    {
+        Instantiate(DeathEffect, transform.position, transform.rotation);
+        Destroy(gameObject);
+        Invoke("ReloadScene", 2.0f);
+    }
+
+    void ReloadScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
