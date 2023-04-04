@@ -10695,6 +10695,7 @@ GameObject:
   - component: {fileID: 1562113931}
   - component: {fileID: 1562113932}
   - component: {fileID: 1562113933}
+  - component: {fileID: 1562113934}
   m_Layer: 6
   m_Name: PlayerWizard
   m_TagString: Untagged
@@ -10714,9 +10715,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f58b260f90210141a48ff1f56b236f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 800
+  Speed: 200
   groundCheckPos: {fileID: 741338451}
-  dashForce: 3000
+  dashForce: 1000
   waitTimeDash: 0.2
   dashAmount: 1
   jumpForce: 15
@@ -11090,6 +11091,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1562113934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562113924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be4f0be809b648149a6dc61df43a0616, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DeathEffect: {fileID: 3556983091307870107, guid: a134585a69661e144b1cdff6ddba0cbc, type: 3}
 --- !u!1 &1611239300
 GameObject:
   m_ObjectHideFlags: 0

@@ -278,25 +278,27 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.gameObject.tag == "Death")
-        {
-            Die();
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.tag == "Death")
+    //    {
+    //        Die();
 
-        }
-    }
-    void Die()
-    {
-        Instantiate(DeathEffect, transform.position, transform.rotation);
-        Destroy(gameObject);
-        Invoke("ReloadScene", 2.0f);
-    }
+    //    }
+    //}
+    //void Die()
+    //{
+    //    Instantiate(DeathEffect, transform.position, transform.rotation);
+    //    Invoke("ReloadScene", 0.2f);
+    //    Destroy(gameObject);
 
-    void ReloadScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
+    //}
+
+    //void ReloadScene()
+    //{
+    //    Debug.Log("Invoke");
+    //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    //}
 
 
     #region Draw radius
