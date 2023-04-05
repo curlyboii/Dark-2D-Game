@@ -31,4 +31,8 @@ public class Pause : MonoBehaviour
         PausePanel.SetActive(false);
         paused = false;
     }
+    public void MenuButton()
+    {
+        SceneManager.LoadScene("Menu");
+    }
 }

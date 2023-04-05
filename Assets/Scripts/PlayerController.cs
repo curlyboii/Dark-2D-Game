@@ -202,6 +202,8 @@ public class PlayerController : MonoBehaviour
         // instead of if(!IsGrounded){ anim.SetBool("hasJumped", true);} else {anim.SetBool("hasJumped", false);}
         anim.SetBool("hasJumped", !IsGrounded);
 
+        anim.SetBool("isDash", isDashing);
+
         #endregion
 
 
