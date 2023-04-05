@@ -10715,9 +10715,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f58b260f90210141a48ff1f56b236f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 200
+  Speed: 3
   groundCheckPos: {fileID: 741338451}
-  dashForce: 1000
+  dashForce: 10
   waitTimeDash: 0.2
   dashAmount: 1
   jumpForce: 15
@@ -10729,11 +10729,10 @@ MonoBehaviour:
   wallJumpRadius: 0.25
   wallJumpCheckPos: {fileID: 1199337725}
   wallJumpGravity: 3
-  wallJumpForceX: 15
+  wallJumpForceX: 10
   wallJumpForceY: 15
   startWallJumpTimer: 0.1
   DeathEffect: {fileID: 3556983091307870107, guid: a134585a69661e144b1cdff6ddba0cbc, type: 3}
-  waitTimeRespawn: 2
 --- !u!50 &1562113926
 Rigidbody2D:
   serializedVersion: 4
@@ -11104,6 +11103,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeathEffect: {fileID: 3556983091307870107, guid: a134585a69661e144b1cdff6ddba0cbc, type: 3}
+  Player: {fileID: 1562113924}
+  waitTimeRespawn: 2.5
 --- !u!1 &1611239300
 GameObject:
   m_ObjectHideFlags: 0

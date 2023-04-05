@@ -4,6 +4,7 @@ using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.SceneManagement;
+using JetBrains.Annotations;
 
 public class PlayerController : MonoBehaviour
 {
@@ -62,7 +63,8 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     public GameObject DeathEffect;
-    public  float waitTimeRespawn;
+    private float jumpInput;
+
 
 
     // Start is called before the first frame update
@@ -80,43 +82,9 @@ public class PlayerController : MonoBehaviour
 
     }
 
-// Update is called once per frame
+    // Update is called once per frame
     void Update()
     {
-
-        #region Movement and Fasing (Left and right)
-
-        if(wallJumpTimer <= 0) //timer, If it has, then the player has finished wall jumping and the code enters the if block.
-                               //Inside the if block, there's another if statement that checks if the player is not currently dashing.
-                               //If the player is not dashing, then the code retrieves the horizontal input from the player using Input.GetAxisRaw("Horizontal").
-        {
-            if (!isDashing) // Not dashing
-            {
-                xInput = Input.GetAxisRaw("Horizontal"); // right arrow xInput = 1 and left xInput = -1, nothing = 0
-                rb.velocity = new Vector2(xInput * Speed * Time.deltaTime, rb.velocity.y); // speed rigidbody
-            }
-
-        }
-        else //Inside the else block, the wallJumpTimer variable is decremented by Time.deltaTime.
-             //This ensures that the player cannot wall jump indefinitely and there is a limited time frame for the wall jump to be executed.
-        {
-
-            wallJumpTimer -= Time.deltaTime;
-
-        }
-
-        if (xInput > 0 && isFasingLeft == true)
-        {
-            Flip();
-            //flip the player
-        }
-        else if (xInput < 0 && isFasingLeft == false)
-        {
-            Flip();
-            //flip the player
-        }
-        #endregion
-
         #region Jump and a bit dash (isGrounded)
         IsGrounded = Physics2D.OverlapCircle(groundCheckPos.position, JumpRadius, WhatIsGround); // Physics2D.OverlapCircle method, The method checks if the circle
                                                                                                  // overlaps with any object in the WhatIsGround layer,
@@ -127,7 +95,7 @@ public class PlayerController : MonoBehaviour
 
             jumpCounter = jumpAmount;
             dashCounter = dashAmount;
-          
+
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && jumpCounter > 0)
@@ -139,34 +107,7 @@ public class PlayerController : MonoBehaviour
                 jumpCounter--;
             }
         }
-        #endregion
 
-        #region Animation
-
-        if (xInput != 0)
-        {
-            anim.SetBool("isWalking", true);
-        }
-        else
-        {
-
-            anim.SetBool("isWalking", false);
-
-        }
-
-        // instead of if(!IsGrounded){ anim.SetBool("hasJumped", true);} else {anim.SetBool("hasJumped", false);}
-        anim.SetBool("hasJumped", !IsGrounded);
-
-        #endregion
-
-
-        #region Restart scene R key
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        
-        }
         #endregion
 
         #region Dash
@@ -200,10 +141,66 @@ public class PlayerController : MonoBehaviour
             rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation; // By setting rb.constraints to RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation, both of these constraints are applied to the rigidbody,
                                                                                                              // meaning that the player cannot move vertically or rotate while dashing. This can be useful for maintaining the direction and trajectory of the dash without
                                                                                                              // any unexpected changes due to gravity or rotation.
-            rb.velocity = new Vector2(dashDirection * dashForce, rb.velocity.y) * Time.deltaTime; //sets the rigidbody's velocity to move the player in the direction
+            rb.velocity = new Vector2(dashDirection * dashForce, rb.velocity.y); //sets the rigidbody's velocity to move the player in the direction
             trailRen.emitting = true;                                                                                //of the dash. The dashDirection * dashForce part calculates the speed and direction of the dash.
-                                                                                                  //rb.velocity.y preserves the vertical velocity of the rigidbody. 
+                                                                                                                     //rb.velocity.y preserves the vertical velocity of the rigidbody. 
         }
+
+        #endregion
+    }
+
+    void FixedUpdate()
+    {
+
+        #region Movement and Fasing (Left and right)
+
+        if(wallJumpTimer <= 0) //timer, If it has, then the player has finished wall jumping and the code enters the if block.
+                               //Inside the if block, there's another if statement that checks if the player is not currently dashing.
+                               //If the player is not dashing, then the code retrieves the horizontal input from the player using Input.GetAxisRaw("Horizontal").
+        {
+            if (!isDashing) // Not dashing
+            {
+                xInput = Input.GetAxisRaw("Horizontal"); // right arrow xInput = 1 and left xInput = -1, nothing = 0
+                rb.velocity = new Vector2(xInput * Speed, rb.velocity.y) ; // speed rigidbody
+            }
+
+        }
+        else //Inside the else block, the wallJumpTimer variable is decremented by Time.deltaTime.
+             //This ensures that the player cannot wall jump indefinitely and there is a limited time frame for the wall jump to be executed.
+        {
+
+            wallJumpTimer -= Time.deltaTime;
+
+        }
+
+        if (xInput > 0 && isFasingLeft == true)
+        {
+            Flip();
+            //flip the player
+        }
+        else if (xInput < 0 && isFasingLeft == false)
+        {
+            Flip();
+            //flip the player
+        }
+        #endregion
+
+        
+        #region Animation
+
+        if (xInput != 0)
+        {
+            anim.SetBool("isWalking", true);
+        }
+        else
+        {
+
+            anim.SetBool("isWalking", false);
+
+        }
+
+        // instead of if(!IsGrounded){ anim.SetBool("hasJumped", true);} else {anim.SetBool("hasJumped", false);}
+        anim.SetBool("hasJumped", !IsGrounded);
 
         #endregion
 
@@ -278,27 +275,6 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (collision.gameObject.tag == "Death")
-    //    {
-    //        Die();
-
-    //    }
-    //}
-    //void Die()
-    //{
-    //    Instantiate(DeathEffect, transform.position, transform.rotation);
-    //    Invoke("ReloadScene", 0.2f);
-    //    Destroy(gameObject);
-
-    //}
-
-    //void ReloadScene()
-    //{
-    //    Debug.Log("Invoke");
-    //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    //}
 
 
     #region Draw radius

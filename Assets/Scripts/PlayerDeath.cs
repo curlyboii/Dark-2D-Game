@@ -6,9 +6,10 @@ using UnityEngine.SceneManagement;
 public class PlayerDeath : MonoBehaviour
 {
 
-    private Rigidbody2D rb;
+    Rigidbody2D rb;
     public GameObject DeathEffect;
     public GameObject Player;
+    public float waitTimeRespawn;
 
     private void Start()
     {
@@ -29,22 +30,18 @@ public class PlayerDeath : MonoBehaviour
             Instantiate(DeathEffect, transform.position, transform.rotation);
 
         Player.SetActive(false);
-        Invoke("ReloadScene", 2f);
+        Invoke("ReloadScene", waitTimeRespawn);
         
 
         }
-     void Destroy()
-    {
-        Destroy(gameObject);
-    }
 
-    void ReloadScene()
+        void ReloadScene()
         {
-            Debug.Log("Invoke");
+
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
-    }
+}
 
 
 
