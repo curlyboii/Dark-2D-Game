@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5526825693239270522}
   - component: {fileID: 5526825693239270523}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5526825693350043221}
   - component: {fileID: 5526825693350043218}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -233,7 +233,7 @@ GameObject:
   - component: {fileID: 5526825693962000271}
   - component: {fileID: 5526825693962000270}
   - component: {fileID: 5526825693962000268}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BlueFlower_00000
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -294,9 +294,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -665189455
-  m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 7be5baf7883cd45498a56c67049e4c81, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -339,7 +339,7 @@ GameObject:
   - component: {fileID: 5526825694721567333}
   - component: {fileID: 5526825694721567331}
   - component: {fileID: 5526825694721567330}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BlueFlower_00000 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -402,7 +402,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 7be5baf7883cd45498a56c67049e4c81, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

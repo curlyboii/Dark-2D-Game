@@ -12,6 +12,9 @@ public class MenuScripts : MonoBehaviour
     public GameObject GameName;
     public GameObject CreditsText;
     public GameObject TextPeople;
+    public GameObject Background;
+    public GameObject Flower1;
+    public GameObject Flower2;
 
 
 
@@ -36,6 +39,9 @@ public class MenuScripts : MonoBehaviour
         QuitButton.SetActive(false);
         CreditsButton.SetActive(false);
         GameName.SetActive(false);
+        Background.SetActive(false);
+        Flower1.SetActive(false);
+        Flower2.SetActive(false);   
         CreditsText.SetActive(true);
         TextPeople.SetActive(true);
         BackButton.SetActive(true);
@@ -49,6 +55,9 @@ public class MenuScripts : MonoBehaviour
         QuitButton.SetActive(true);
         CreditsButton.SetActive(true);
         GameName.SetActive(true);
+        Background.SetActive(true);
+        Flower1.SetActive(true);
+        Flower2.SetActive(true);
         CreditsText.SetActive(false);
         TextPeople.SetActive(false);
         BackButton.SetActive(false);
