@@ -40,6 +40,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: BackGround
+    uniqueID: 2323104573
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: PodButton
+    uniqueID: 1723303413
+    locked: 0
+  - name: Buttons
+    uniqueID: 3629777841
     locked: 0

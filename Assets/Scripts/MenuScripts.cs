@@ -5,6 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class MenuScripts : MonoBehaviour
 {
+    public GameObject StartButton;
+    public GameObject CreditsButton;
+    public GameObject QuitButton;
+    public GameObject BackButton;
+    public GameObject GameName;
+    public GameObject CreditsText;
+    public GameObject TextPeople;
+
+
 
     public void StartGame()
     {
@@ -23,9 +32,30 @@ public class MenuScripts : MonoBehaviour
     public void Credits()
     {
 
-        SceneManager.LoadScene("Credits");
+        StartButton.SetActive(false);
+        QuitButton.SetActive(false);
+        CreditsButton.SetActive(false);
+        GameName.SetActive(false);
+        CreditsText.SetActive(true);
+        TextPeople.SetActive(true);
+        BackButton.SetActive(true);
+        TextPeople.SetActive(true);
 
     }
+    public void BackToMenu()
+    {
+
+        StartButton.SetActive(true);
+        QuitButton.SetActive(true);
+        CreditsButton.SetActive(true);
+        GameName.SetActive(true);
+        CreditsText.SetActive(false);
+        TextPeople.SetActive(false);
+        BackButton.SetActive(false);
+        TextPeople.SetActive(false);
+
+    }
+
     public void MainMenu()
     {
 
