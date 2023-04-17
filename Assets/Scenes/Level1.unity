@@ -11530,7 +11530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be4f0be809b648149a6dc61df43a0616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeathEffect: {fileID: 3556983091307870107, guid: a134585a69661e144b1cdff6ddba0cbc, type: 3}
+  deathEffectPrefab: {fileID: 3556983091307870107, guid: a134585a69661e144b1cdff6ddba0cbc, type: 3}
   Player: {fileID: 1562113924}
   waitTimeRespawn: 2.5
 --- !u!1 &1605927267
