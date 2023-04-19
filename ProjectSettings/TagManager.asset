@@ -11,12 +11,12 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PastProcessing
   - Water
   - UI
   - Player
   - Ground
-  - 
+  - Background(Decoration)
   - 
   - 
   - 
@@ -46,6 +46,9 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UpLayer
+    uniqueID: 2066785387
     locked: 0
   - name: PodButton
     uniqueID: 1723303413
