@@ -17,7 +17,7 @@ public class MovingPlatform : MonoBehaviour
 
     private void Start()
     {
-        targetPosition= endPoint.position;
+        targetPosition= startPoint.position;
     }
 
     private void Update()
