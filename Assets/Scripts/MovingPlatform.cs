@@ -67,7 +67,7 @@ public class MovingPlatform : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             collision.transform.SetParent(this.transform);
-           Debug.Log("Player on platform");
+          // Debug.Log("Player on platform");
 
          }
     }
@@ -76,7 +76,7 @@ public class MovingPlatform : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             collision.transform.SetParent(null);
-            Debug.Log("Player exit platform");
+           // Debug.Log("Player exit platform");
 
         }
     }
