@@ -38,7 +38,11 @@ public class PlayerDeath : MonoBehaviour
         {
             Die();
         }
+        else if (collision.gameObject.tag == "CaveLevelEnd")
+        {
+            SceneManager.LoadScene("Level Dark Forest");
         }
+    }
 
     void Die()
         {
